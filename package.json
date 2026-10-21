@@ -1,0 +1,30 @@
+{
+  "name": "dbms-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "npm ci && (pip3 install --break-system-packages -r requirements.txt || pip3 install -r requirements.txt || python3 -m pip install -r requirements.txt || true)",
+    "postinstall": "pip3 install --break-system-packages -r requirements.txt || pip3 install -r requirements.txt || python3 -m pip install -r requirements.txt || true",
+    "render:build": "bash ./render-build.sh",
+    "db:init": "node database/init_db.js",
+    "db:migrate": "python database/migrate_competition_dataset.py",
+    "ai:train": "py ai/forecast_service.py",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

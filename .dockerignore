@@ -1,0 +1,10 @@
+node_modules
+.git
+.env
+.env.*
+*.log
+__pycache__
+*.py[cod]
+database/*.db
+database/*.db-shm
+database/*.db-wal
