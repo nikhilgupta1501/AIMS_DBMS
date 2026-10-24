@@ -188,17 +188,6 @@ The platform supports live online retraining:
    - Operational Workspace: `http://localhost:3000/#/app/overview`
    - AI Demand Intelligence: `http://localhost:3000/#/app/forecasts`
 
-## Deploy the Full App on Render
-
-The repository includes a Render Blueprint and Dockerfile for deploying the Express API, dashboard, SQLite database, and Python forecasting pipeline as one service.
-
-1. Push this project, including `Dockerfile`, `render.yaml`, and `requirements.txt`, to a GitHub repository.
-2. In Render, choose **New > Blueprint**, connect that repository, and apply the `render.yaml` blueprint. The service uses a paid Starter instance because persistent disks are required for SQLite data retention.
-3. Wait for the first deployment to finish. The service initializes `/var/data/aims.db`; when `data/train.csv` is present, the initial import can take several minutes.
-4. Open the Render service URL. Check `/api/kpis` returns JSON and the root URL loads the dashboard. Test a stock change, restart the service, and confirm the change remains.
-
-The blueprint mounts a 1 GB persistent disk at `/var/data` and stores both SQLite and the forecast cache there. Do not remove the disk if you need to preserve the database. Vercel is not used in this deployment; the same Render service serves both the dashboard and its `/api` routes.
-
 ---
 
 ## 🖥️ Dashboard Navigation Guide

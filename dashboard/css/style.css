@@ -2434,3 +2434,346 @@ code, pre, .sku-code, .tabular-num, .metric-value, .stat-number {
   color: var(--text-main);
 }
 
+/* ============================================================================
+   EXPLAINABLE AI (XAI) & WHAT-IF SCENARIO SIMULATOR
+   ============================================================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.68);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  padding: 16px;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-card {
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-medium, #cbd5e1);
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-subtle, #e2e8f0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface-subtle, #f8fafc);
+}
+
+.modal-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink-primary, #0f172a);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-body {
+  padding: 22px 24px;
+  overflow-y: auto;
+  color: var(--ink-primary, #1e293b);
+}
+
+.modal-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border-subtle, #e2e8f0);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background: var(--surface-subtle, #f8fafc);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink-muted, #64748b);
+  border-radius: 6px;
+  padding: 2px 6px;
+  transition: all 0.15s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--ink-primary, #0f172a);
+}
+
+.modal-card-xl {
+  max-width: 1040px;
+  width: 96%;
+}
+
+.xai-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px solid var(--border-subtle);
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.xai-tab-btn {
+  background: none;
+  border: none;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex: 1;
+  text-align: center;
+}
+
+.xai-tab-btn:hover {
+  color: var(--ink-primary);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 4px 4px 0 0;
+}
+
+.xai-tab-btn.active {
+  color: var(--cobalt-mark);
+  border-bottom-color: var(--cobalt-mark);
+  background: rgba(37, 99, 235, 0.04);
+  border-radius: 4px 4px 0 0;
+}
+
+.xai-panel {
+  display: none;
+}
+
+.xai-panel.active {
+  display: block;
+}
+
+.xai-equation-box {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-medium);
+  border-left: 4px solid var(--cobalt-mark);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.xai-equation-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ink-primary);
+  margin-bottom: 6px;
+}
+
+.xai-formula-display {
+  background: #ffffff;
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-family: var(--font-sans);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  letter-spacing: 0.4px;
+}
+
+.xai-formula-display em {
+  font-style: italic;
+  font-family: serif;
+}
+
+.xai-formula-display sub,
+.xai-formula-display sup {
+  font-size: 11px;
+}
+
+.xai-attrib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.xai-attrib-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+}
+
+.xai-attrib-card .attrib-name {
+  font-size: 11px;
+  color: var(--ink-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.xai-attrib-card .attrib-val {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 4px 0;
+  font-family: var(--font-mono);
+}
+
+.xai-attrib-card .attrib-meta {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+/* Simulator Controls */
+.sim-controls-card {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.sim-slider-row {
+  margin-bottom: 16px;
+}
+
+.sim-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.sim-badge-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cobalt-mark);
+  background: rgba(37, 99, 235, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.sim-quick-chips {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.sim-chip-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 3px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--ink-secondary);
+  transition: all 0.15s ease;
+}
+
+.sim-chip-btn:hover {
+  background: var(--surface-subtle);
+  color: var(--ink-primary);
+  border-color: var(--ink-primary);
+}
+
+/* Simulator Output Dashboard */
+.sim-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sim-kpi-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 14px 12px;
+  text-align: center;
+}
+
+.sim-kpi-card .sim-kpi-label {
+  font-size: 11px;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.sim-kpi-card .sim-kpi-number {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  margin: 4px 0;
+  color: var(--ink-primary);
+}
+
+.sim-kpi-card .sim-kpi-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.sim-alert-banner {
+  border-radius: 6px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.sim-alert-danger {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.sim-alert-healthy {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.sim-alert-warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+

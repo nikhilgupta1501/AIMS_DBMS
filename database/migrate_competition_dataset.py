@@ -20,7 +20,7 @@ import sqlite3
 import pandas as pd
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.environ.get("DB_PATH", os.path.join(BASE_DIR, "database", "aims.db"))
+DB_PATH = os.path.join(BASE_DIR, "database", "aims.db")
 TRAIN_CSV = os.path.join(BASE_DIR, "data", "train.csv")
 
 if not os.path.exists(TRAIN_CSV):
@@ -285,9 +285,9 @@ def run_migration():
     # 3. Seed Users, Categories, Suppliers, Warehouses
     print("[STEP 2/5] Seeding Users, Categories, Suppliers, and 10 Stores...")
     cursor.executemany("INSERT INTO users (user_id, full_name, email, password_hash, role) VALUES (?, ?, ?, ?, ?);", [
-        (1, "Saumya Sharma", "saumya@aims.org", "pbkdf2$hash_admin", "ADMIN"),
-        (2, "Rahul Verma", "rahul@aims.org", "pbkdf2$hash_staff", "STAFF"),
-        (3, "Ananya Gupta", "ananya@aims.org", "pbkdf2$hash_manager", "MANAGER")
+        (1, "Saumya Sharma", "saumya@aims.org", "$2b$10$IIsKeway.wGqWDPuL5fGsOkm2qQsNnn3mIK.AQq0sY5UJl1Q.gyGa", "ADMIN"),
+        (2, "Rahul Verma", "rahul@aims.org", "$2b$10$IIsKeway.wGqWDPuL5fGsOkm2qQsNnn3mIK.AQq0sY5UJl1Q.gyGa", "STAFF"),
+        (3, "Ananya Gupta", "ananya@aims.org", "$2b$10$IIsKeway.wGqWDPuL5fGsOkm2qQsNnn3mIK.AQq0sY5UJl1Q.gyGa", "MANAGER")
     ])
 
     cursor.executemany("INSERT INTO categories (category_id, category_name, description) VALUES (?, ?, ?);", CATEGORIES)

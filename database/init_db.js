@@ -13,26 +13,26 @@ const path = require('path');
 const fs = require('fs');
 
 const { execSync } = require('child_process');
-const dbPath = process.env.DB_PATH || path.join(__dirname, 'aims.db');
+const dbPath = path.join(__dirname, 'aims.db');
 const csvPath = path.join(__dirname, '..', 'data', 'train.csv');
 const migrateScript = path.join(__dirname, 'migrate_competition_dataset.py');
-const pythonCmd = process.env.PYTHON_CMD || process.env.PYTHON_BIN || (process.platform === 'win32' ? 'python' : 'python3');
 
-// Ensure database directory exists
-fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-
-// If the real-world competition dataset exists, delegate to migration engine unless FAST_INIT or SKIP_COMPETITION_DATASET is requested
-const skipDataset = process.env.SKIP_COMPETITION_DATASET === 'true' || process.env.FAST_INIT === 'true';
-if (!skipDataset && fs.existsSync(csvPath) && fs.existsSync(migrateScript)) {
+// If the real-world competition dataset exists, delegate to migration engine
+if (fs.existsSync(csvPath) && fs.existsSync(migrateScript)) {
   console.log('[DB-INIT] Real-world competition dataset detected (data/train.csv).');
   console.log('[DB-INIT] Running automated real-world database migration engine...');
   try {
-    execSync(`"${pythonCmd}" "${migrateScript}"`, { stdio: 'inherit', env: { ...process.env, DB_PATH: dbPath } });
+    execSync(`python "${migrateScript}"`, { stdio: 'inherit' });
     console.log('[DB-INIT] Database initialized with 10 stores, 50 items, and 913k transactions!');
     return;
   } catch (err) {
     console.warn('[DB-INIT] Python runner error, falling back to standard DDL setup:', err.message);
   }
+}
+
+// Ensure database directory exists
+if (!fs.existsSync(__dirname)) {
+  fs.mkdirSync(__dirname, { recursive: true });
 }
 
 // Remove old DB file if starting fresh
@@ -341,9 +341,10 @@ console.log('[DB-INIT] Loading Seed Data...');
 
 // Users
 const insertUser = db.prepare('INSERT INTO users (user_id, full_name, email, password_hash, role) VALUES (?, ?, ?, ?, ?)');
-insertUser.run(1, 'Saumya Sharma', 'saumya@aims.org', 'pbkdf2$hash_admin', 'ADMIN');
-insertUser.run(2, 'Rahul Verma', 'rahul@aims.org', 'pbkdf2$hash_staff', 'STAFF');
-insertUser.run(3, 'Ananya Gupta', 'ananya@aims.org', 'pbkdf2$hash_manager', 'MANAGER');
+const defaultBcryptHash = '$2b$10$IIsKeway.wGqWDPuL5fGsOkm2qQsNnn3mIK.AQq0sY5UJl1Q.gyGa'; // password123
+insertUser.run(1, 'Saumya Sharma', 'saumya@aims.org', defaultBcryptHash, 'ADMIN');
+insertUser.run(2, 'Rahul Verma', 'rahul@aims.org', defaultBcryptHash, 'STAFF');
+insertUser.run(3, 'Ananya Gupta', 'ananya@aims.org', defaultBcryptHash, 'MANAGER');
 
 // Categories
 const insertCat = db.prepare('INSERT INTO categories (category_id, category_name, description) VALUES (?, ?, ?)');

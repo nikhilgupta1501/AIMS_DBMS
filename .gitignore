@@ -22,10 +22,11 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 
-# SQLite Database & Temporary Files
-*.db
-database/*.db
+# SQLite Temporary Files
 *.db-shm
 *.db-wal
-*.sqlite
-*.sqlite3
+
+# Temporary tunnel binaries
+cloudflared.exe
+public_url.txt
+

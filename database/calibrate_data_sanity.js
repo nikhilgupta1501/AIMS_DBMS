@@ -9,19 +9,15 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 const fs = require('fs');
 
-const dbPath = process.env.DB_PATH || path.join(__dirname, 'aims.db');
+const dbPath = path.join(__dirname, 'aims.db');
 const db = new DatabaseSync(dbPath);
 
-console.log('[CALIBRATE] Connecting to database:', dbPath);
+console.log('[CALIBRATE] Connecting to aims.db...');
 
 // Load forecast cache to get real ROP and daily demand per product
-const forecastPath = process.env.FORECAST_CACHE_PATH || (
-  process.env.DB_PATH 
-    ? path.join(path.dirname(process.env.DB_PATH), 'forecast_cache.json')
-    : path.join(__dirname, '..', 'ai', 'forecast_cache.json')
-);
+const forecastPath = path.join(__dirname, '..', 'ai', 'forecast_cache.json');
 if (!fs.existsSync(forecastPath)) {
-  console.error('[CALIBRATE] forecast_cache.json not found at:', forecastPath);
+  console.error('[CALIBRATE] forecast_cache.json not found!');
   process.exit(1);
 }
 

@@ -109,7 +109,7 @@ While this captures general trends, real-world retail demand forecasting require
 │  └──────────────────────┬──────────────────────┘   └────────────────────┬────────────────────┘  │
 │                         │                                               │                       │
 └─────────────────────────┼───────────────────────────────────────────────┼───────────────────────┘
-                          │ PostgreSQL Wire Protocol (SSL)               │ Read Sales History
+                          │ PostgreSQL Wire Protocol (SSL)                │ Read Sales History
                           ▼                                               ▼
 ┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                               SUPABASE CLOUD INFRASTRUCTURE                                     │

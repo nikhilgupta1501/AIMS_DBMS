@@ -8,23 +8,21 @@
   },
   "scripts": {
     "start": "node server.js",
-    "build": "npm ci && (pip3 install --break-system-packages -r requirements.txt || pip3 install -r requirements.txt || python3 -m pip install -r requirements.txt || true)",
-    "postinstall": "pip3 install --break-system-packages -r requirements.txt || pip3 install -r requirements.txt || python3 -m pip install -r requirements.txt || true",
-    "render:build": "bash ./render-build.sh",
     "db:init": "node database/init_db.js",
     "db:migrate": "python database/migrate_competition_dataset.py",
     "ai:train": "py ai/forecast_service.py",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "engines": {
-    "node": ">=22.5.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "dotenv": "^18.0.8",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "localtunnel": "^2.0.2"
   }
 }
